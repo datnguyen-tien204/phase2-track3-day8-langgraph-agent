@@ -20,7 +20,8 @@ class ScenarioMetric(BaseModel):
     interrupt_count: int = 0
     approval_required: bool = False
     approval_observed: bool = False
-    latency_ms: int = 0
+    latency_ms: int = 0                        # ← actual wall-clock time
+    state_validation_errors: int = 0           # ← NEW: schema validation errors
     errors: list[str] = Field(default_factory=list)
 
 
@@ -30,11 +31,18 @@ class MetricsReport(BaseModel):
     avg_nodes_visited: float
     total_retries: int
     total_interrupts: int
+    total_state_validation_errors: int = 0     # ← NEW: aggregate
+    avg_latency_ms: float = 0.0                # ← NEW: aggregate latency
     resume_success: bool = False
     scenario_metrics: list[ScenarioMetric]
 
 
-def metric_from_state(state: dict[str, Any], expected_route: str, approval_required: bool) -> ScenarioMetric:
+def metric_from_state(
+    state: dict[str, Any],
+    expected_route: str,
+    approval_required: bool,
+    latency_ms: int = 0,
+) -> ScenarioMetric:
     events = state.get("events", []) or []
     errors = state.get("errors", []) or []
     actual_route = state.get("route")
@@ -42,9 +50,25 @@ def metric_from_state(state: dict[str, Any], expected_route: str, approval_requi
     nodes = [event.get("node", "unknown") for event in events]
     retry_count = sum(1 for node in nodes if node == "retry")
     interrupt_count = sum(1 for node in nodes if node == "approval")
-    success = actual_route == expected_route and bool(state.get("final_answer") or state.get("pending_question"))
+
+    # Count state validation errors: any error string containing "validation" or
+    # any event with event_type indicating a schema error.
+    validation_errors = sum(
+        1 for e in errors if "validation" in str(e).lower() or "schema" in str(e).lower()
+    )
+    # Also count events that signal validation failure
+    validation_errors += sum(
+        1 for ev in events
+        if "validation" in str(ev.get("event_type", "")).lower()
+        or "validation" in str(ev.get("message", "")).lower()
+    )
+
+    success = actual_route == expected_route and bool(
+        state.get("final_answer") or state.get("pending_question")
+    )
     if approval_required:
         success = success and approval is not None
+
     return ScenarioMetric(
         scenario_id=str(state.get("scenario_id", "unknown")),
         success=success,
@@ -55,6 +79,8 @@ def metric_from_state(state: dict[str, Any], expected_route: str, approval_requi
         interrupt_count=interrupt_count,
         approval_required=approval_required,
         approval_observed=approval is not None,
+        latency_ms=latency_ms,
+        state_validation_errors=validation_errors,
         errors=list(errors),
     )
 
@@ -68,6 +94,8 @@ def summarize_metrics(items: list[ScenarioMetric]) -> MetricsReport:
         avg_nodes_visited=mean(item.nodes_visited for item in items),
         total_retries=sum(item.retry_count for item in items),
         total_interrupts=sum(item.interrupt_count for item in items),
+        total_state_validation_errors=sum(item.state_validation_errors for item in items),
+        avg_latency_ms=mean(item.latency_ms for item in items),
         resume_success=False,
         scenario_metrics=items,
     )

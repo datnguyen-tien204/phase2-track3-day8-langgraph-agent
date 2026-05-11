@@ -1,3 +1,6 @@
 scenarios_path: data/sample/scenarios.jsonl
 checkpointer: memory
 report_path: reports/lab_report.md
+# Uncomment for SQLite persistence (run: pip install langgraph-checkpoint-sqlite)
+# checkpointer: sqlite
+# database_url: checkpoints.db
