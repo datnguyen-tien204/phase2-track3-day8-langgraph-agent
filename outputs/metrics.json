@@ -5,7 +5,7 @@
   "total_retries": 3,
   "total_interrupts": 3,
   "total_state_validation_errors": 0,
-  "avg_latency_ms": 2.875,
+  "avg_latency_ms": 6.875,
   "resume_success": true,
   "scenario_metrics": [
     {
@@ -18,7 +18,7 @@
       "interrupt_count": 0,
       "approval_required": false,
       "approval_observed": false,
-      "latency_ms": 3,
+      "latency_ms": 11,
       "state_validation_errors": 0,
       "errors": []
     },
@@ -32,7 +32,7 @@
       "interrupt_count": 0,
       "approval_required": false,
       "approval_observed": false,
-      "latency_ms": 3,
+      "latency_ms": 7,
       "state_validation_errors": 0,
       "errors": []
     },
@@ -46,7 +46,7 @@
       "interrupt_count": 0,
       "approval_required": false,
       "approval_observed": false,
-      "latency_ms": 2,
+      "latency_ms": 5,
       "state_validation_errors": 0,
       "errors": []
     },
@@ -60,7 +60,7 @@
       "interrupt_count": 1,
       "approval_required": true,
       "approval_observed": true,
-      "latency_ms": 3,
+      "latency_ms": 8,
       "state_validation_errors": 0,
       "errors": []
     },
@@ -74,7 +74,7 @@
       "interrupt_count": 0,
       "approval_required": false,
       "approval_observed": false,
-      "latency_ms": 4,
+      "latency_ms": 8,
       "state_validation_errors": 0,
       "errors": [
         "transient failure attempt=1",
@@ -91,7 +91,7 @@
       "interrupt_count": 1,
       "approval_required": true,
       "approval_observed": true,
-      "latency_ms": 3,
+      "latency_ms": 6,
       "state_validation_errors": 0,
       "errors": []
     },
@@ -105,7 +105,7 @@
       "interrupt_count": 0,
       "approval_required": false,
       "approval_observed": false,
-      "latency_ms": 2,
+      "latency_ms": 4,
       "state_validation_errors": 0,
       "errors": [
         "transient failure attempt=1"
@@ -121,7 +121,7 @@
       "interrupt_count": 1,
       "approval_required": true,
       "approval_observed": true,
-      "latency_ms": 3,
+      "latency_ms": 6,
       "state_validation_errors": 0,
       "errors": []
     }

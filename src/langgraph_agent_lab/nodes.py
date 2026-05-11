@@ -17,7 +17,10 @@ from .state import AgentState, ApprovalDecision, Route, make_event
 # ---------------------------------------------------------------------------
 
 _RISKY_KEYWORDS: frozenset[str] = frozenset(
-    {"refund", "delete", "send", "cancel", "remove", "revoke", "terminate", "wipe", "purge", "close"}
+    {
+        "refund", "delete", "send", "cancel", "remove",
+        "revoke", "terminate", "wipe", "purge", "close",
+    }
 )
 _TOOL_KEYWORDS: frozenset[str] = frozenset(
     {"status", "order", "lookup", "track", "find", "search", "retrieve", "fetch", "check"}
@@ -147,7 +150,11 @@ def ask_clarification_node(state: AgentState) -> dict[str, Any]:
     return {
         "pending_question": question,
         "final_answer": question,
-        "events": [make_event("clarify", "completed", "missing information requested", question=question)],
+        "events": [
+            make_event(
+                "clarify", "completed", "missing information requested", question=question
+            )
+        ],
     }
 
 

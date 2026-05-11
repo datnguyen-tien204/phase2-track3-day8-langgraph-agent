@@ -7,8 +7,6 @@ students are still debugging graph wiring.
 
 from __future__ import annotations
 
-from typing import Any
-
 from .nodes import (
     answer_node,
     approval_node,
@@ -22,11 +20,16 @@ from .nodes import (
     risky_action_node,
     tool_node,
 )
-from .routing import route_after_approval, route_after_classify, route_after_evaluate, route_after_retry
+from .routing import (
+    route_after_approval,
+    route_after_classify,
+    route_after_evaluate,
+    route_after_retry,
+)
 from .state import AgentState
 
 
-def build_graph(checkpointer: Any | None = None) -> Any:
+def build_graph(checkpointer: object | None = None) -> object:
     """Build and compile the LangGraph workflow.
 
     Architecture overview

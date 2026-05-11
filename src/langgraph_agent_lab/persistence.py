@@ -9,10 +9,10 @@ Supports three modes:
 
 from __future__ import annotations
 
-from typing import Any
 
-
-def build_checkpointer(kind: str = "memory", database_url: str | None = None) -> Any | None:
+def build_checkpointer(
+    kind: str = "memory", database_url: str | None = None
+) -> object | None:
     """Return a LangGraph checkpointer configured for the requested backend.
 
     SQLite notes
@@ -59,4 +59,7 @@ def build_checkpointer(kind: str = "memory", database_url: str | None = None) ->
         dsn = database_url or ""
         return PostgresSaver.from_conn_string(dsn)
 
-    raise ValueError(f"Unknown checkpointer kind: {kind!r}. Choose from: none, memory, sqlite, postgres")
+    raise ValueError(
+        f"Unknown checkpointer kind: {kind!r}. "
+        "Choose from: none, memory, sqlite, postgres"
+    )

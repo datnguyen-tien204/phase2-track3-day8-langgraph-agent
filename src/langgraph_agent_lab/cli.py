@@ -15,7 +15,7 @@ from .metrics import MetricsReport, metric_from_state, summarize_metrics, write_
 from .persistence import build_checkpointer
 from .report import write_report
 from .scenarios import load_scenarios
-from .state import Scenario, initial_state
+from .state import initial_state
 
 app = typer.Typer(no_args_is_help=True)
 

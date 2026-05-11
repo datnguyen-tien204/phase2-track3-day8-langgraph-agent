@@ -36,7 +36,10 @@ def render_report(metrics: MetricsReport) -> str:  # noqa: ANN001
     failed = [m for m in metrics.scenario_metrics if not m.success]
     failed_section = ""
     if failed:
-        lines = [f"- **{m.scenario_id}**: expected `{m.expected_route}`, got `{m.actual_route}`" for m in failed]
+        lines = [
+            f"- **{m.scenario_id}**: expected `{m.expected_route}`, got `{m.actual_route}`"
+            for m in failed
+        ]
         failed_section = "\n".join(lines)
     else:
         failed_section = "_All scenarios passed._"
@@ -63,7 +66,8 @@ START → intake → classify ─┬─→ answer       → finalize → END  (s
                             │               └─→ retry ─┬─→ tool   (retry loop)
                             │                          └─→ dead_letter → finalize → END
                             ├─→ clarify      → finalize → END  (missing_info)
-                            ├─→ risky_action → approval → tool → evaluate → answer → finalize → END  (risky)
+                            ├─→ risky_action → approval → tool → evaluate
+                            │                                  → answer → finalize → END  (risky)
                             └─→ retry → …                                             (error)
 ```
 
